@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/software_doc_db
+    username: root
+    password: svts3
+
+  jpa:
+    hibernate:
+      ddl-auto: create
