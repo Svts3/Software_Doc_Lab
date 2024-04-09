@@ -1,11 +1,14 @@
-package ua.lviv.iot.service.impl;
+package ua.lviv.iot.business.impl;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.opencsv.exceptions.CsvException;
 
 import ua.lviv.iot.csv.CsvReader;
 import ua.lviv.iot.model.City;
@@ -17,6 +20,7 @@ import ua.lviv.iot.model.Message;
 import ua.lviv.iot.model.Operator;
 import ua.lviv.iot.model.Street;
 import ua.lviv.iot.model.User;
+import ua.lviv.iot.model.constants.ApplicationConstants;
 import ua.lviv.iot.repository.CityRepository;
 import ua.lviv.iot.repository.CompanyRepository;
 import ua.lviv.iot.repository.ConversationRepository;
@@ -86,6 +90,83 @@ public class CsvBeanInserterImpl {
                 System.out.println("Unsupported class: " + clazz.getName());
             }
         });
+
+    }
+
+    public void assingRelationshipToBeans()
+            throws FileNotFoundException, IOException, CsvException {
+
+        Map<Class<?>, Map<String, List<Long>>> map = csvReader.readRealtionships();
+
+        var repos = ApplicationConstants.MODELS_REPOSITORIES;
+
+        for (Map.Entry<Class<?>, Map<String, List<Long>>> entry : map.entrySet()) {
+
+            Class class1 = entry.getKey();
+
+            if (class1.getSimpleName().equals("City")) {
+
+                List<Long> foreignKeys = entry.getValue().get("country");
+                List<City> cities = cityRepository.findAll();
+                for (int i = 0; i < cities.size(); i++) {
+                    cities.get(i).setCountry(countryRepository.findById(foreignKeys.get(i)).get());
+                    cityRepository.save(cities.get(i));
+                }
+
+            }
+            if (class1.getSimpleName().equals("Message")) {
+                List<Long> conversationKeys = entry.getValue().get("conversation");
+                List<Message> messages = messageRepository.findAll();
+                for (int i = 0; i < messages.size(); i++) {
+                    messages.get(i).setConversation(conversationRepository.findById(conversationKeys.get(i)).orElse(null));
+                    messageRepository.save(messages.get(i));
+                }
+
+            }
+            if (class1.getSimpleName().equals("Invitation")) {
+                List<Long> conversations = entry.getValue().get("conversation");
+                List<Long> invitedOperators = entry.getValue().get("invitedOperator");
+                List<Invitation> invitations = invitationRepository.findAll();
+                for (int i = 0; i < invitations.size(); i++) {
+                    invitations.get(i).setConversation(
+                            conversationRepository.findById(conversations.get(i)).get());
+                    invitations.get(i).setInvitedOperator(
+                            operatorRepository.findById(invitedOperators.get(i)).orElse(null));
+                    invitationRepository.save(invitations.get(i));
+                }
+            }
+            if (class1.getSimpleName().equals("Street")) {
+                List<Long> foreignKeys = entry.getValue().get("city");
+                List<Street> streets = streetRepository.findAll();
+                for (int i = 0; i < streets.size(); i++) {
+                    streets.get(i).setCity(cityRepository.findById(foreignKeys.get(i)).get());
+                    streetRepository.save(streets.get(i));
+                }
+
+            }
+            if (class1.getSimpleName().equals("Company")) {
+                List<Long> foreignKeys = entry.getValue().get("street");
+                List<Company> companies = companyRepository.findAll();
+                for (int i = 0; i < companies.size(); i++) {
+                    companies.get(i).setStreet(streetRepository.findById(foreignKeys.get(i)).get());
+                    companyRepository.save(companies.get(i));
+                }
+
+            }
+
+            if (class1.getSimpleName().equals("Operator")) {
+
+                List<Long> foreignKeys = entry.getValue().get("company");
+                List<Operator> operators = operatorRepository.findAll();
+                for (int i = 0; i < operators.size(); i++) {
+                    operators.get(i)
+                            .setCompany(companyRepository.findById(foreignKeys.get(i)).get());
+                    operatorRepository.save(operators.get(i));
+                }
+
+            }
+
+        }
 
     }
 }

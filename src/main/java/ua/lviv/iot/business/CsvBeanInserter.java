@@ -1,4 +1,4 @@
-package ua.lviv.iot.service;
+package ua.lviv.iot.business;
 
 import java.io.FileNotFoundException;
 

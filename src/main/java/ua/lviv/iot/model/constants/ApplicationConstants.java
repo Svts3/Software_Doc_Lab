@@ -27,8 +27,8 @@ import ua.lviv.iot.repository.UserRepository;
 public final class ApplicationConstants {
 
     public static final List<Class<?>> MODELS_CLASS_TYPES = List.of(User.class, Operator.class,
-            City.class, Company.class, Conversation.class, Invitation.class, Message.class,
-            Country.class, Street.class);
+            City.class, Company.class,Street.class, Conversation.class, Invitation.class, Message.class,
+            Country.class);
 
     public static final List<Class<?>> MODELS_REPOSITORIES = List.of(UserRepository.class,
             OperatorRepository.class, CityRepository.class, CompanyRepository.class,

@@ -20,6 +20,7 @@ import lombok.Setter;
 @Setter
 public class Operator extends Person {
 
+    @CsvBindByName(column = "position")
     private String position;
 
     @ManyToOne

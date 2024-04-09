@@ -8,9 +8,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import ua.lviv.iot.business.impl.CsvBeanInserterImpl;
 import ua.lviv.iot.csv.CsvReader;
 import ua.lviv.iot.csv.CsvWriter;
-import ua.lviv.iot.service.impl.CsvBeanInserterImpl;
+import ua.lviv.iot.model.Invitation;
 
 @SpringBootApplication
 public class HubSpotConversationApplication implements CommandLineRunner {
@@ -33,14 +34,9 @@ public class HubSpotConversationApplication implements CommandLineRunner {
         csvWriter.fillCsvFile();
         csvReader.readCsv();
         beanInserter.saveBeans();
-        jdbcTemplate.execute("CALL set_sequence_cities()");
-        jdbcTemplate.execute("CALL set_sequence_companies()");
-        jdbcTemplate.execute("CALL set_sequence_invitations()");
-        jdbcTemplate.execute("CALL set_sequence_messages()");
-        jdbcTemplate.execute("CALL set_sequence_people()");
-        jdbcTemplate.execute("CALL set_sequence_streets()");
+        csvReader.readRealtionships();
+        beanInserter.assingRelationshipToBeans();
         System.exit(0);
-
     }
 
 }
