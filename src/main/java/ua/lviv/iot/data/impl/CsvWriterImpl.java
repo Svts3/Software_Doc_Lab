@@ -1,4 +1,4 @@
-package ua.lviv.iot.csv.impl;
+package ua.lviv.iot.data.impl;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -17,10 +17,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.mysql.cj.x.protobuf.MysqlxExpr.Operator;
-
-import ua.lviv.iot.csv.CsvWriter;
-import ua.lviv.iot.model.constants.ApplicationConstants;
+import ua.lviv.iot.constants.ApplicationConstants;
+import ua.lviv.iot.data.CsvWriter;
 
 @Component
 public class CsvWriterImpl implements CsvWriter {
@@ -62,14 +60,15 @@ public class CsvWriterImpl implements CsvWriter {
 
     private void generateRandomValue(List<Class<?>> classes, Random random,
             BufferedWriter bufferedWriter, Field i) throws IOException {
-        if (i.getType() == Operator.class) {
-            int min = 1001, max = 2001;
-            Long randValue = random.nextLong(min, max);
-            while (ids.contains(randValue)) {
-                randValue = random.nextLong(min, max);
-            }
-            bufferedWriter.write(String.valueOf(randValue));
-        } else if (i.getType() == Long.class
+//        if (i.getType().getSimpleName().equals("Operator")) {
+//            int min = 1001, max = 2001;
+//            Long randValue = random.nextLong(min, max);
+//            while (ids.contains(randValue)) {
+//                randValue = random.nextLong(min, max);
+//            }
+//            bufferedWriter.write(String.valueOf(randValue));
+        // }
+        if (i.getType() == Long.class
                 || (classes.contains(i.getType()) || i.getType() == List.class)) {
 
             int min = 1, max = 1001;

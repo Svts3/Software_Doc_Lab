@@ -1,4 +1,4 @@
-package ua.lviv.iot.csv.impl;
+package ua.lviv.iot.data.impl;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -16,8 +16,8 @@ import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvException;
 
-import ua.lviv.iot.csv.CsvReader;
-import ua.lviv.iot.model.constants.ApplicationConstants;
+import ua.lviv.iot.constants.ApplicationConstants;
+import ua.lviv.iot.data.CsvReader;
 
 @Component
 public class CsvReaderImpl implements CsvReader {

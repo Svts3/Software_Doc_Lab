@@ -1,4 +1,4 @@
-package ua.lviv.iot.csv;
+package ua.lviv.iot.data;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

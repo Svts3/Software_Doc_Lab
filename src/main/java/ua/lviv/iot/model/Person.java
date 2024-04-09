@@ -1,5 +1,7 @@
 package ua.lviv.iot.model;
 
+import java.util.List;
+
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvIgnore;
 
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,5 +37,5 @@ public abstract class Person {
 
     @CsvBindByName(column = "email")
     private String email;
-
+    
 }
