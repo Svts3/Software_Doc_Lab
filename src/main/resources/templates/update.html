@@ -6,26 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Title Here</title>
     <style>
-        button{
-            width: 100px;
-            height: 70px;
-        }
-        form{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        form > *{
-            margin-top: 10px;
-        }
-        input{
-            width: 100px;
-        }
-        button{
-            width: 100px;
-            height: 50;
-        }
+       body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #00ff2a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 120px;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #00ff2a;
+}
     </style>
 </head>
 
@@ -37,11 +67,45 @@
         <input type="text" th:field="*{description}" th:value="${conversation.description}">
         <button type="submit">Update</button>
     </form>
-    <form th:action="@{/{id}/user/{email}(id=${id})(email=${email})}" method="post">
+    <form id="addUserForm" action="#" method="post">
         <label>Add user to conversation</label>
-        <input type="text" name="email" placeholder="User Email">
-        <button type="submit">Add</button>
+        <select id="addUserSelect" name="email">
+            <option th:each="person : ${people}" th:value="${person.email}" th:text="${person.email}"></option>
+        </select>
+        <button id="addUserButton" type="submit">Add</button>
     </form>
+
+    <form id="removeUserForm" action="#" method="post">
+        <label>Remove user from conversation</label>
+        <select id="removeUserSelect" name="email">
+            <option th:each="member : ${conversationMembers}" th:value="${member.email}" th:text="${member.email}"></option>
+        </select>
+        <button id="removeUserButton" type="submit">Remove</button>
+    </form>
+        
+        <script>
+            document.getElementById("addUserForm").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+            
+            var conversationId = "[[${id}]]"; 
+            var username = document.getElementById("addUserSelect").value; 
+            
+            var url = "/" + conversationId + "/user/" + encodeURIComponent(username);
+            document.getElementById("addUserForm").action = url;
+            this.submit();
+        });
+
+        document.getElementById("removeUserForm").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+            
+            var conversationId = "[[${id}]]"; 
+            var username = document.getElementById("removeUserSelect").value; 
+            
+            var url = "/" + conversationId + "/remove-user/" + encodeURIComponent(username);
+            document.getElementById("removeUserForm").action = url;
+            this.submit();
+        });
+        </script>
     
 
 

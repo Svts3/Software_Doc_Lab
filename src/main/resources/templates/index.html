@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Title Here</title>
     <style>
+       body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
         .items {
             display: flex;
             justify-content: space-between;
@@ -13,22 +20,47 @@
         }
 
         .item {
+            display: flex;
+            flex-direction: column;
             border: 1px solid black;
             width: 300px;
-            height: 150px;
-            margin-left:5px
+            min-height: 150px;
+            margin: 5px;
+            padding: 10px;
         }
 
         .item h2 {
-            align-items: center;
-        }
-        button{
-            border: 1px solid black;
-            background-color: green;
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
         }
 
-        .buttons{
-            flex-direction: row;
+        .members {
+            margin-top: 10px;
+        }
+
+        .members h4 {
+            margin-bottom: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: 1px solid black;
+            background-color: green;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: darkgreen;
         }
     </style>
 </head>
@@ -41,8 +73,9 @@
         <div class="item" th:each=" conversation: ${conversations}">
             <h2 th:text="${conversation.name}"></h2>
             <h2 th:text="${conversation.description}"></h2>
-            <div class="members" th:each="member : ${conversation.members}">
-            <p th:text="${member.firstName}"></p>
+            <div class="members">
+                <h4>Members:</h4>
+            <p th:each="member : ${conversation.members}" th:text="${member.email}"></p>
             </div>
             <div class="buttons">
             	<form th:action="@{/{id}(id=${conversation.id})}" method="post">

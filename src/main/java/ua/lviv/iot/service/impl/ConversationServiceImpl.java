@@ -76,4 +76,12 @@ public class ConversationServiceImpl implements ConversationService {
         return conversationRepository.save(conversation);
     }
 
+    @Override
+    public Conversation removeMember(String username, Long conversationId) {
+        Person person = personRepository.findByEmail(username);
+        Conversation conversation = findById(conversationId);
+        conversation.getMembers().removeIf(i->i.getId().equals(person.getId()));
+        return conversationRepository.save(conversation);
+    }
+
 }

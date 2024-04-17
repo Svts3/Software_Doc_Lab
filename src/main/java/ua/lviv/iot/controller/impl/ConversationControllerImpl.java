@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ua.lviv.iot.controller.GeneralController;
@@ -53,9 +54,10 @@ public class ConversationControllerImpl implements GeneralController<Conversatio
 
     @GetMapping("/{id}/conversation/update")
     public String updatePage(@PathVariable(name = "id") Long id, Model model) {
-        model.addAttribute("id", id); // Add this line to set the id attribute in the model
+        model.addAttribute("id", id);
         model.addAttribute("conversation", conversationService.findById(id));
         model.addAttribute("people", personRepository.findAll());
+        model.addAttribute("conversationMembers", conversationService.findById(id).getMembers());
         
         return "update.html";
     }
@@ -71,6 +73,12 @@ public class ConversationControllerImpl implements GeneralController<Conversatio
     public String addUsers(@PathVariable(name = "id") Long id,
                            @PathVariable(name = "username") String username) {
         conversationService.addMember(username, id);
+        return "redirect:/";
+    }
+    @PostMapping("/{id}/remove-user/{username}")
+    public String removeUsers(@PathVariable(name = "id") Long id,
+                           @PathVariable(name = "username") String username) {
+        conversationService.removeMember(username, id);
         return "redirect:/";
     }
 
