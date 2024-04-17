@@ -8,7 +8,8 @@ import ua.lviv.iot.model.Person;
 import ua.lviv.iot.model.User;
 
 public interface ConversationController extends GeneralController<Conversation, Long> {
-    Message sendMessage(User receiver, Conversation conversation, Message message);
+    
+    Message sendMessage(Conversation conversation, Message message);
 
     Conversation createConversation(List<User> members, Conversation conversation);
 

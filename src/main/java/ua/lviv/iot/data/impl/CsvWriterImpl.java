@@ -44,6 +44,9 @@ public class CsvWriterImpl implements CsvWriter {
                 for (int r = 0; r < 1000; r++) {
                     int count = 0;
                     for (Field field : classFields) {
+                        if(c.getSimpleName().equals("Conversation") && field.getName().equals("invitation")) {
+                            continue;
+                        }
                         generateRandomValue(classes, random, bufferedWriter, field);
                         if (++count < classFields.size()) {
                             bufferedWriter.write(",");

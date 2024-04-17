@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Title Here</title>
+    <style>
+        button{
+            width: 100px;
+            height: 70px;
+        }
+        form{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        form > *{
+            margin-top: 10px;
+        }
+        input{
+            width: 100px;
+        }
+        button{
+            width: 100px;
+            height: 50;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="post" th:object="${conversation}" th:action="@{/{id}/update(id=${conversation.id})}">
+        <label>Name</label>
+        <input th:field="*{name}"  th:value="${conversation.description}" type="text">
+        <label>Description</label>
+        <input type="text" th:field="*{description}" th:value="${conversation.description}">
+        <button type="submit">Update</button>
+    </form>
+    <form th:action="@{/{id}/user/{email}(id=${id})(email=${email})}" method="post">
+        <label>Add user to conversation</label>
+        <input type="text" name="email" placeholder="User Email">
+        <button type="submit">Add</button>
+    </form>
+    
+
+
+</body>
+
+</html>

@@ -5,7 +5,9 @@ import java.util.List;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,7 +42,10 @@ public class Conversation {
     @JoinTable(name = "conversation_members", joinColumns = @JoinColumn(referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "id"))
     private List<Person> members;
 
-    @OneToMany(mappedBy = "conversation")
+    @OneToMany(mappedBy = "conversation", cascade = CascadeType.REMOVE)
     @CsvIgnore
     private List<Message> messages;
+    
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST, mappedBy = "conversation")
+    private List<Invitation>invitations;
 }

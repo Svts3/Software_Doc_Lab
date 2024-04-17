@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Title Here</title>
+    <style>
+        button{
+            width: 100px;
+            height: 70px;
+        }
+        form{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        form > *{
+            margin-top: 10px;
+        }
+        input{
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <form method="post" th:object="${conversation}" th:action="@{/}">
+        <label>Name</label>
+        <input th:field="*{name}"  type="text">
+        <label>Description</label>
+        <input type="text" th:field="*{description}" >
+        <button type="submit">Save</button>
+    </form>
+
+
+</body>
+
+</html>
