@@ -79,7 +79,8 @@
             </div>
             <div class="buttons">
             	<form th:action="@{/{id}(id=${conversation.id})}" method="post">
-                <button class="delete" >Delete</button >
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button class="delete" type="submit">Delete</button>
                 </form>
                 <form th:action="@{/{id}/conversation/update(id=${conversation.id})}" method="get">
                 <button class="update">Update</button >

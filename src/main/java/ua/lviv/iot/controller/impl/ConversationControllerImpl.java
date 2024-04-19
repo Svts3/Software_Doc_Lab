@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,27 +63,27 @@ public class ConversationControllerImpl implements GeneralController<Conversatio
         return "update.html";
     }
 
-    @PostMapping("/{id}/update")
+    @PutMapping("/{id}/update")
     @Override
     public String update(@PathVariable(name = "id") Long id, Conversation conversation) {
         conversationService.update(id, conversation);
         return "redirect:/";
     }
 
-    @PostMapping("/{id}/user/{username}")
+    @PutMapping("/{id}/user/{username}")
     public String addUsers(@PathVariable(name = "id") Long id,
                            @PathVariable(name = "username") String username) {
         conversationService.addMember(username, id);
         return "redirect:/";
     }
-    @PostMapping("/{id}/remove-user/{username}")
+    @PutMapping("/{id}/remove-user/{username}")
     public String removeUsers(@PathVariable(name = "id") Long id,
                            @PathVariable(name = "username") String username) {
         conversationService.removeMember(username, id);
         return "redirect:/";
     }
 
-    @PostMapping("/{id}")
+    @DeleteMapping("/{id}")
     @Override
     public String deleteById(@PathVariable(name = "id") Long id, Model model) {
         conversationService.deleteById(id);

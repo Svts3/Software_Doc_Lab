@@ -63,14 +63,6 @@ public class CsvWriterImpl implements CsvWriter {
 
     private void generateRandomValue(List<Class<?>> classes, Random random,
             BufferedWriter bufferedWriter, Field i) throws IOException {
-//        if (i.getType().getSimpleName().equals("Operator")) {
-//            int min = 1001, max = 2001;
-//            Long randValue = random.nextLong(min, max);
-//            while (ids.contains(randValue)) {
-//                randValue = random.nextLong(min, max);
-//            }
-//            bufferedWriter.write(String.valueOf(randValue));
-        // }
         if (i.getType() == Long.class
                 || (classes.contains(i.getType()) || i.getType() == List.class)) {
 

@@ -61,13 +61,15 @@ button[type="submit"]:hover {
 
 <body>
     <form method="post" th:object="${conversation}" th:action="@{/{id}/update(id=${conversation.id})}">
+        <input type="hidden" name="_method" value="put">
         <label>Name</label>
-        <input th:field="*{name}"  th:value="${conversation.description}" type="text">
+        <input th:field="*{name}" th:value="${conversation.name}" type="text">
         <label>Description</label>
         <input type="text" th:field="*{description}" th:value="${conversation.description}">
         <button type="submit">Update</button>
     </form>
-    <form id="addUserForm" action="#" method="post">
+    <form id="addUserForm" method="post">
+        <input type="hidden" name="_method" value="put">
         <label>Add user to conversation</label>
         <select id="addUserSelect" name="email">
             <option th:each="person : ${people}" th:value="${person.email}" th:text="${person.email}"></option>
@@ -75,40 +77,50 @@ button[type="submit"]:hover {
         <button id="addUserButton" type="submit">Add</button>
     </form>
 
-    <form id="removeUserForm" action="#" method="post">
+    <form id="removeUserForm" method="post">
+        <input type="hidden" name="_method" value="delete">
         <label>Remove user from conversation</label>
         <select id="removeUserSelect" name="email">
             <option th:each="member : ${conversationMembers}" th:value="${member.email}" th:text="${member.email}"></option>
         </select>
         <button id="removeUserButton" type="submit">Remove</button>
     </form>
-        
-        <script>
-            document.getElementById("addUserForm").addEventListener("submit", function(event) {
-            event.preventDefault(); 
-            
-            var conversationId = "[[${id}]]"; 
-            var username = document.getElementById("addUserSelect").value; 
-            
+
+    <script>
+        document.getElementById("addUserButton").addEventListener("click", function(event) {
+            event.preventDefault();
+
+            var conversationId = "[[${id}]]";
+            var username = document.getElementById("addUserSelect").value;
+
             var url = "/" + conversationId + "/user/" + encodeURIComponent(username);
-            document.getElementById("addUserForm").action = url;
-            this.submit();
+
+            fetch(url, {
+                method: 'PUT'
+            })
+            setTimeout(function() {
+                        window.location.href = '/';
+                    }, 100);
         });
 
-        document.getElementById("removeUserForm").addEventListener("submit", function(event) {
-            event.preventDefault(); 
-            
-            var conversationId = "[[${id}]]"; 
-            var username = document.getElementById("removeUserSelect").value; 
-            
+        document.getElementById("removeUserButton").addEventListener("click", function(event) {
+            event.preventDefault();
+
+            var conversationId = "[[${id}]]";
+            var username = document.getElementById("removeUserSelect").value;
+
             var url = "/" + conversationId + "/remove-user/" + encodeURIComponent(username);
-            document.getElementById("removeUserForm").action = url;
-            this.submit();
+
+            fetch(url, {
+                method: 'PUT'
+            })
+            setTimeout(function() {
+                        window.location.href = '/';
+                    }, 100);
         });
-        </script>
-    
-
-
+    </script>
 </body>
+</body>
+
 
 </html>
