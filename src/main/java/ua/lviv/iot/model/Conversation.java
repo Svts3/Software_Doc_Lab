@@ -5,10 +5,15 @@ import java.util.List;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -32,8 +37,15 @@ public class Conversation {
     private String name;
     @CsvBindByName(column = "description")
     private String description;
-    
-    @OneToMany(mappedBy = "conversation")
+
+    @ManyToMany
+    @JoinTable(name = "conversation_members", joinColumns = @JoinColumn(referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "id"))
+    private List<Person> members;
+
+    @OneToMany(mappedBy = "conversation", cascade = CascadeType.REMOVE)
     @CsvIgnore
-    private List<Message>messages;
+    private List<Message> messages;
+    
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST, mappedBy = "conversation")
+    private List<Invitation>invitations;
 }

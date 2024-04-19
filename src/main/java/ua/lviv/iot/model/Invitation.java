@@ -7,6 +7,7 @@ import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
 import com.opencsv.bean.CsvIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,12 +40,12 @@ public class Invitation {
     @CsvDate(value = "yyyy-MM-dd")
     private Date creationDate;
     
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "invited_operator_id", referencedColumnName = "id")
     @CsvIgnore
     private Operator invitedOperator;
     
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "conversation_id", referencedColumnName = "id")
     @CsvIgnore
     private Conversation conversation;

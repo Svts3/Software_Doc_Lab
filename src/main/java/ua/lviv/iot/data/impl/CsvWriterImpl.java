@@ -1,4 +1,4 @@
-package ua.lviv.iot.csv.impl;
+package ua.lviv.iot.data.impl;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import ua.lviv.iot.csv.CsvWriter;
-import ua.lviv.iot.model.constants.ApplicationConstants;
+import ua.lviv.iot.constants.ApplicationConstants;
+import ua.lviv.iot.data.CsvWriter;
 
 @Component
 public class CsvWriterImpl implements CsvWriter {
@@ -42,8 +42,11 @@ public class CsvWriterImpl implements CsvWriter {
                         classFields.stream().map(Field::getName).collect(Collectors.joining(",")));
                 bufferedWriter.newLine();
                 for (int r = 0; r < 1000; r++) {
-                    int count = 0; 
+                    int count = 0;
                     for (Field field : classFields) {
+                        if(c.getSimpleName().equals("Conversation") && field.getName().equals("invitation")) {
+                            continue;
+                        }
                         generateRandomValue(classes, random, bufferedWriter, field);
                         if (++count < classFields.size()) {
                             bufferedWriter.write(",");
@@ -62,7 +65,8 @@ public class CsvWriterImpl implements CsvWriter {
             BufferedWriter bufferedWriter, Field i) throws IOException {
         if (i.getType() == Long.class
                 || (classes.contains(i.getType()) || i.getType() == List.class)) {
-            final int min = 1, max = 1001;
+
+            int min = 1, max = 1001;
             Long randValue = random.nextLong(min, max);
             while (ids.contains(randValue)) {
                 randValue = random.nextLong(min, max);

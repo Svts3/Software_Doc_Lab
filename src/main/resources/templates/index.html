@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Title Here</title>
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .items {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid black;
+            width: 300px;
+            min-height: 150px;
+            margin: 5px;
+            padding: 10px;
+        }
+
+        .item h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .members {
+            margin-top: 10px;
+        }
+
+        .members h4 {
+            margin-bottom: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: 1px solid black;
+            background-color: green;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: darkgreen;
+        }
+    </style>
+</head>
+
+<body>
+    <form th:action="@{/conversation/save}" method="get">
+    <button >Save Conversation</button>
+</form>
+    <div class="items">
+        <div class="item" th:each=" conversation: ${conversations}">
+            <h2 th:text="${conversation.name}"></h2>
+            <h2 th:text="${conversation.description}"></h2>
+            <div class="members">
+                <h4>Members:</h4>
+            <p th:each="member : ${conversation.members}" th:text="${member.email}"></p>
+            </div>
+            <div class="buttons">
+            	<form th:action="@{/{id}(id=${conversation.id})}" method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button class="delete" type="submit">Delete</button>
+                </form>
+                <form th:action="@{/{id}/conversation/update(id=${conversation.id})}" method="get">
+                <button class="update">Update</button >
+            	</form>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

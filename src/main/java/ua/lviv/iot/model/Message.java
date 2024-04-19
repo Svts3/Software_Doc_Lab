@@ -1,5 +1,8 @@
 package ua.lviv.iot.model;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvIgnore;
 
@@ -31,19 +34,8 @@ public class Message {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id", referencedColumnName = "id")
-    @CsvIgnore
-    private User sender;
-
-    @ManyToOne
-    @JoinColumn(name = "receiver_id", referencedColumnName = "id")
-    @CsvIgnore
-    private User receiver;
-    
-    @ManyToOne
+    @Cascade(CascadeType.REMOVE)
     @CsvIgnore
     private Conversation conversation;
-    
-    
 
 }
